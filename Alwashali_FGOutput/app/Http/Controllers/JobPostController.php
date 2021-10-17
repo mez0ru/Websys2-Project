@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Roles;
 use App\Models\JobPost;
 use App\Models\Requirement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class JobPostController extends Controller
 {
@@ -20,7 +22,20 @@ class JobPostController extends Controller
         $jobs = JobPost::with('requirement')
         ->orderBy('id', 'DESC')->Paginate(2);
         $count = $jobs->total();
+
         return view('hirer.dashboard', compact('jobs', 'count'));
+
+        // switch (Auth::user()->role ?? Roles::CANDIDATE) {
+        //     case Roles::HIRER:
+        //         return view('hirer.dashboard', compact('jobs', 'count'));
+        //         break;
+        //     case Roles::CANDIDATE:
+        //         return view('candidate.dashboard', compact('jobs', 'count'));
+        //     break;
+        //     default:
+        //         return view('candidate.dashboard', compact('jobs', 'count'));
+        //     break;
+        // }
     }
 
     /**
@@ -58,20 +73,18 @@ class JobPostController extends Controller
         $reqs = Requirement::updateOrCreate(['id' => $request->reqid], [
             'gender' => $request->gender,
             'age' => $request->age,
-            'country' => 'Philippines',
             'qualifications' => $request->qualifications,
             'min_work_experience' => $request->min_work_experience,
-            'min_work_experience_range_type' => $request->min_work_experience_range_type,
         ]);
 
         $post = JobPost::updateOrCreate(['id' => $request->id], [
             'title' => $request->title,
-            'job_description' => $request->job_description,
+            'description' => $request->job_description,
             'salary_from' => $request->salary_from,
             'salary_to' => $request->salary_to,
             'requirement_id' => $reqs->id,
             'apply_until' => $request->apply_until,
-            'social_media_accounts' => $request->social_media_accounts,
+            'social' => $request->social_media_accounts,
         ]);
         
         $jobs = JobPost::with('requirement')
@@ -125,6 +138,6 @@ class JobPostController extends Controller
     {
         $post = JobPost::find($id)->delete();
         return route('jobs.index', ['delete' => 'Job posting have been removed successfully']);
-        // response()->json(['success'=>'Post Deleted successfully']);
+        response()->json(['success'=>'Post Deleted successfully']);
     }
 }

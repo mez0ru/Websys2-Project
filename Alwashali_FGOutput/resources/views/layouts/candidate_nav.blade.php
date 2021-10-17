@@ -1,4 +1,3 @@
-@section('Nav Menu')
 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
     <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
         Dashboard
@@ -6,12 +5,11 @@
     </a>
     <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
         <nav class="sb-sidenav-menu-nested nav">
-        <a class="nav-link" href="home.php">Discover Jobs</a>
-            <a class="nav-link" href="home.php?applied=1">Applied Jobs</a>
+        <a class="nav-link" href="{{ route('jobs') }}">Discover Jobs</a>
+            <a class="nav-link" href="{{ route('appliedJobs') }}">Applied Jobs</a>
         </nav>
     </div>
-        <a class="nav-link" href="qualifications.php">
+        <a class="nav-link" href="{{ route('qualifications.index') }}">
         <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
         Qualifications
     </a>
-@endsection

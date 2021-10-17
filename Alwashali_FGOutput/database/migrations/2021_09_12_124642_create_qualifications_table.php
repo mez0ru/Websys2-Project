@@ -16,6 +16,11 @@ class CreateQualificationsTable extends Migration
         Schema::create('qualifications', function (Blueprint $table) {
             $table->id();
             $table->mediumText('qualification');
+            $table->unsignedBigInteger('candidate_id');
+            $table->foreign('candidate_id')
+            ->references('id')
+            ->on('users')
+            ->onDelete('cascade');
             $table->timestamps();
         });
     }

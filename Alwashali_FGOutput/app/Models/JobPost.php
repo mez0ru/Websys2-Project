@@ -11,15 +11,20 @@ class JobPost extends Model
 
     protected $fillable = [
         'title',
-        'job_description',
+        'description',
         'salary_from',
-        'requirement_id',
         'salary_to',
         'apply_until',
-        'social_media_accounts',
+        'social',
+        'hirer_id',
+        'requirement_id',
     ];
 
     public function requirement(){
         return $this->hasOne(Requirement::class, 'id', 'requirement_id');
+    }
+
+    public function applied() {
+        return $this->hasMany(JobApplied::class, 'job_id');
     }
 }

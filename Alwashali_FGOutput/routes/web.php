@@ -15,6 +15,28 @@ use App\Http\Controllers\QualificationController;
 |
 */
 
-Route::resource('/jobs', JobPostController::class);
-Route::resource('/qualifications', QualificationController::class);
+Route::get('jobs', function () {
+	return view('dashboard');
+})->name('jobs');
+
 Route::redirect('/', '/jobs', 301);
+Route::view('dashboard', 'profile.profileSettings')
+	->name('dashboard')
+	->middleware(['auth', 'verified']);
+
+
+Route::group(['middleware' => 'auth'], function() {
+	Route::group(['middleware' => 'role:candidate'], function() {
+		Route::view('appliedJobs', 'candidate.job-applied')
+		->name('appliedJobs');
+	});
+
+	Route::group(['middleware' => 'role:candidate'], function() {
+		Route::resource('qualifications', QualificationController::class);
+	});
+
+	Route::group(['middleware' => 'role:hirer'], function() {
+		Route::view('statistics', 'hirer.statistics')
+		->name('statistics');
+	});
+});

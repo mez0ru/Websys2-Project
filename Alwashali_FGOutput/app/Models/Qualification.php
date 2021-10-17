@@ -10,6 +10,11 @@ class Qualification extends Model
     use HasFactory;
 
     protected $fillable = [
-        'qualification'
+        'qualification',
+        'candidate_id'
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class, 'candidate_id');
+    }
 }

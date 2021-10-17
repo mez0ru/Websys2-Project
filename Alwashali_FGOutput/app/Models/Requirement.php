@@ -12,9 +12,7 @@ class Requirement extends Model
     protected $fillable = [
         'gender',
         'age',
-        'country',
         'qualifications',
         'min_work_experience',
-        'min_work_experience_range_type',
     ];
 }

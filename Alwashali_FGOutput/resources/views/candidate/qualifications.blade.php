@@ -1,5 +1,4 @@
-@extends('layouts.master')
-@extends('layouts.hirer_nav')
+@extends('layouts.app')
 
 @section('title')
     Qualifications
@@ -36,7 +35,7 @@
       <tbody>
         @foreach ($qualifications as $qualification)
         <tr>
-            <th scope="row">{{ $qualification->id }}</th>
+            <th scope="row">{{ $loop->index + 1 }}</th>
             <td>{{ $qualification->qualification }}</td>
             <td>
                 <a type="button" class="btn btn-info" href="{{ route('qualifications.edit', $qualification->id) }}">Edit</a>

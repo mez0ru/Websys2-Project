@@ -1,0 +1,1 @@
+\App\Models\X::factory()->count(x)->create();

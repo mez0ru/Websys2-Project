@@ -1,5 +1,4 @@
-@extends('layouts.master')
-@extends('layouts.hirer_nav')
+@extends('layouts.app')
 
 @section('title')
 Add Qualifications

@@ -16,16 +16,21 @@ class CreateJobPostsTable extends Migration
         Schema::create('job_posts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->mediumText('job_description');
+            $table->mediumText('description');
             $table->unsignedInteger('salary_from');
             $table->unsignedInteger('salary_to');
-            $table->unsignedBigInteger('requirement_id');
+            $table->unsignedBigInteger('requirement_id')->nullable();
             $table->foreign('requirement_id')
             ->references('id')
             ->on('requirements')
             ->onDelete('cascade');
+            $table->unsignedBigInteger('hirer_id');
+            $table->foreign('hirer_id')
+            ->references('id')
+            ->on('users')
+            ->onDelete('cascade');
             $table->date('apply_until');
-            $table->string('social_media_accounts');
+            $table->string('social');
             $table->timestamps();
         });
     }

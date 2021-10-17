@@ -17,10 +17,8 @@ class CreateRequirementsTable extends Migration
             $table->id();
             $table->enum('gender', ['Male', 'Female', 'Both']);
             $table->integer('age');
-            $table->string('country');
             $table->mediumText('qualifications');
             $table->integer('min_work_experience');
-            $table->enum('min_work_experience_range_type', ['Month', 'Year']);
             $table->timestamps();
         });
     }

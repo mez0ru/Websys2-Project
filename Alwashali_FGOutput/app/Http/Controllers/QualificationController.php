@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Qualification;
 use Illuminate\Http\Request;
+use App\Models\Qualification;
+use Illuminate\Support\Facades\Auth;
 
 class QualificationController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Qualification::class, 'qualification');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +20,7 @@ class QualificationController extends Controller
      */
     public function index()
     {
-        $qualifications = Qualification::orderBy('id', 'DESC')->Paginate(5);
+        $qualifications = Qualification::where('candidate_id', Auth::user()->id)->orderBy('id', 'DESC')->Paginate(5);
         $count = $qualifications->total();
         return view('candidate.qualifications', compact('qualifications', 'count'));
     }
@@ -37,7 +43,7 @@ class QualificationController extends Controller
      */
     public function store(Request $request)
     {
-        Qualification::create($request->all());
+        Qualification::create($request->merge(['candidate_id' => Auth::user()->id])->all());
         return redirect()->route('qualifications.index')->with('add', 'A qualification has been added successfully');
     }
 
@@ -72,7 +78,7 @@ class QualificationController extends Controller
      */
     public function update(Request $request, Qualification $qualification)
     {
-        $qualification->update($request->all());
+        $qualification->update($request->merge(['candidate_id' => Auth::user()->id])->all());
         return redirect()->route('qualifications.index')->with('edit', 'Edited qualification successfully!');
     }
 
