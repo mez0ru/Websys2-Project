@@ -15,9 +15,7 @@
                 <div class="ml-3">
                     @include('livewire.job-posts.create-job-modal')
                     @include('livewire.job-posts.edit-job-modal')
-                    <div x-data="{ confirmText: 'You are about to delete a job post, are you sure?' }">
-@include('livewire.job-posts.confirm-modal')
-                    </div>
+                    @include('livewire.job-posts.confirm-modal')
                 </div>
             </div>
         </div>
@@ -50,7 +48,7 @@
       </div>
       <div class="col-sm-9 col-6 order-2 order-sm-1">
       <div class="col-12-sm">
-      <a href="candidatesListApplied.php?job={{ $job->id }}">
+      <a href="candidates-list-applied/{{ $job->id }}">
                               <h5 class="font-weight-bold text-primary post-title">{{ $job->title }}</h5>
                           </a>
       </div>

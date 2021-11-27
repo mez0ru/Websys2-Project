@@ -10283,3 +10283,8 @@ body {
 .errorMessages span {
   font-weight: bold;
 }
+
+.candidateRow:hover {
+  outline: none;
+  cursor: pointer;
+}

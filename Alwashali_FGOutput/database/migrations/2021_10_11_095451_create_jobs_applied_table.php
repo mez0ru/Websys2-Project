@@ -25,6 +25,7 @@ class CreateJobsAppliedTable extends Migration
             ->references('id')
             ->on('users')
             ->onDelete('cascade');
+            $table->integer('status')->default(0);
             $table->boolean('notify')->default(true);
             $table->timestamps();
         });

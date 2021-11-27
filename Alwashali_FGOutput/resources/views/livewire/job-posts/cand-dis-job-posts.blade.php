@@ -13,9 +13,7 @@
                     placeholder="Search" aria-label="Search" aria-describedby="search-addon"
                     wire:model="searchTerm" />
                 <div class="ml-3">
-                    <div x-data="{ confirmText: 'You are about to apply for this job post, are you sure?' }">
 @include('livewire.job-posts.confirm-modal')
-                    </div>
                 </div>
             </div>
         </div>
@@ -52,9 +50,7 @@
       </div>
       <div class="col-sm-9 col-6 order-2 order-sm-1">
       <div class="col-12-sm">
-      <a href="candidatesListApplied.php?job={{ $job->id }}">
-                              <h5 class="font-weight-bold text-primary post-title">{{ $job->title }}</h5>
-                          </a>
+      <h5 class="font-weight-bold text-primary post-title">{{ $job->title }}</h5>
       </div>
       <span class="badge badge-light rounded align-middle mb-2 min-work-exp">Min. Experience: {{ $job->requirement->min_work_experience }} year(s)</span>
       <div class="row mt-2">

@@ -30,6 +30,7 @@ class HirerJobPosts extends Component
     public $qual;
 
     public $searchTerm;
+    public $confirmMessage = 'You are about to delete a job post, are you sure?';
     public $count;
 
     // public function __construct()

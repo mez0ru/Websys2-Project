@@ -231,6 +231,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Roles' => App\Roles::class,
+        'TransactionStatus' => App\TransactionStatus::class,
     ],
 
 ];

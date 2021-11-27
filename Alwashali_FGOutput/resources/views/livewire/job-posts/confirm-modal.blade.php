@@ -7,7 +7,7 @@
                         <div class="row">
                             <div class="col ml-auto"><button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click='resetInput'> <span aria-hidden="true">&times;</span> </button></div>
                         </div>
-                        <p class="font-weight-bold mb-2" x-text="confirmText"></p>
+                        <p class="font-weight-bold mb-2">{{ $confirmMessage }}</p>
                         <p class="text-muted ">You won't be able to undo after performing this action.</p>
                         <input type="number" wire:model="ids" hidden>
                     </div>

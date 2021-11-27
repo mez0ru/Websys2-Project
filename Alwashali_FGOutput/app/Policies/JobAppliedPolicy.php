@@ -11,10 +11,10 @@ class JobAppliedPolicy
 {
     use HandlesAuthorization;
 
-    public function before(?User $user, $ability){
-// determine if user is candidate
-return optional($user)->role === Roles::CANDIDATE;
-    }
+//     public function before(?User $user, $ability){
+// // determine if user is candidate
+// return optional($user)->role === Roles::CANDIDATE;
+//     }
 
     /**
      * Determine whether the user can view any models.
@@ -59,7 +59,8 @@ return optional($user)->role === Roles::CANDIDATE;
      */
     public function update(User $user, JobApplied $jobApplied)
     {
-        return $user->role === Roles::CANDIDATE && $user->id === $jobApplied->candidate_id;
+        return ($user->role === Roles::CANDIDATE && $user->id === $jobApplied->candidate_id)
+        || ($user->role === Roles::HIRER && $user->id === $jobApplied->job->hirer_id);
     }
 
     /**

@@ -20,6 +20,7 @@ class CandDisJobPosts extends Component
     public $job_id;
 
     public $searchTerm;
+    public $confirmMessage = 'You are about to apply for this job post, are you sure?';
     public $count;
 
     // public function __construct()

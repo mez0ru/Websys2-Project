@@ -2,7 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobPostController;
+use App\Http\Livewire\Hirer\CandidatesApplied;
 use App\Http\Controllers\QualificationController;
+use App\Http\Controllers\CandidatesAppliedController;
+use App\Http\Livewire\Hirer\ShowCandidate;
+use App\Http\Livewire\JobPosts\CandApplJobPosts;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,16 +31,15 @@ Route::view('dashboard', 'profile.profileSettings')
 
 Route::group(['middleware' => 'auth'], function() {
 	Route::group(['middleware' => 'role:candidate'], function() {
-		Route::view('appliedJobs', 'candidate.job-applied')
+		Route::get('appliedJobs', CandApplJobPosts::class)
 		->name('appliedJobs');
-	});
-
-	Route::group(['middleware' => 'role:candidate'], function() {
 		Route::resource('qualifications', QualificationController::class);
 	});
 
 	Route::group(['middleware' => 'role:hirer'], function() {
 		Route::view('statistics', 'hirer.statistics')
 		->name('statistics');
+		Route::get('candidates-list-applied/{id}', CandidatesApplied::class);
+		Route::get('view-candidate/{id}', ShowCandidate::class)->name('view-candidate');
 	});
 });

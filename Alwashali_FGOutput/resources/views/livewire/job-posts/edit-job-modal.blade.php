@@ -56,7 +56,7 @@
                         <div class="form-group">
                             <label for="apply-until" class="col-form-label">Job will be open until:</label>
                             <input class="form-control datepicker" type="date"
-                                data-provide="datepicker" placeholder="yyyy-mm-dd" wire:model="until" required></input>
+                                data-provide="datepicker" placeholder="yyyy-mm-dd" wire:model="until" required>
                                 @error('until') <span style="color: red" class="error">{{ $message }}</span>
                             @enderror
                         </div>

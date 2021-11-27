@@ -29,9 +29,9 @@ class JobPostPolicy
      * @param  \App\Models\JobPost  $jobPost
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(?User $user, JobPost $jobPost)
+    public function view(User $user, JobPost $jobPost)
     {
-        return $user->role === Roles::HIRER;
+        return $user->role === Roles::HIRER && $user->id === $jobPost->hirer_id;
     }
 
     /**
