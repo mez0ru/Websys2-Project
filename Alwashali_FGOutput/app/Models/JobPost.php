@@ -27,4 +27,6 @@ class JobPost extends Model
     public function applied() {
         return $this->hasMany(JobApplied::class, 'job_id');
     }
+
+    
 }

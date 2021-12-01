@@ -25,7 +25,7 @@
       </div>
   </div>
 @endif
-<h6 class="mt-3">Click on a candidate to view his bio and qualifications.</h6>
+<h6 class="mt-3">Click on a candidate's name to view his/her bio and qualifications.</h6>
 
 
 <table class="table table-striped table-hover mt-4">
@@ -34,6 +34,8 @@
       <th scope="col">#</th>
       <th scope="col">Name</th>
       <th scope="col">Email</th>
+      <th scope="col">Gender</th>
+      <th scope="col">Age</th>
       <th scope="col">Date Applied</th>
       <th scope="col">Last Status Change</th>
       <th scope="col">Status</th>
@@ -44,13 +46,15 @@
       
     @forelse ($applications as $application)
     <tr class="{!! TransactionStatus::HirerGetColorByStatus($application->status) !!}">
-        <th scope="row" class="candidateRow" onclick="window.open('{{ route('view-candidate', $application->id) }}', '_blank')">{{ $loop->index + 1 }}</th>
+        <th>{{ $loop->index + 1 }}</th>
         <td class="candidateRow" onclick="window.open('{{ route('view-candidate', $application->id) }}', '_blank')">{{ $application->candidate->name }}</td>
-        <td class="candidateRow" onclick="window.open('{{ route('view-candidate', $application->id) }}', '_blank')">{{ $application->candidate->email }}</td>
-        <td class="candidateRow" onclick="window.open('{{ route('view-candidate', $application->id) }}', '_blank')">{{ $application->created_at }}</td>
-        <td class="candidateRow" onclick="window.open('{{ route('view-candidate', $application->id) }}', '_blank')">{{ $application->updated_at }}</td>
+        <td>{{ $application->candidate->email }}</td>
+        <td>{{ $application->candidate->gender }}</td>
+        <td>{{ $application->candidate->age }}</td>
+        <td>{{ $application->created_at }}</td>
+        <td>{{ $application->updated_at }}</td>
         
-        <td class="candidate-status candidateRow" onclick="window.open('{{ route('view-candidate', $application->id) }}', '_blank')">{{ TransactionStatus::HirerGetNameOfStatus($application->status) }}</td>
+        <td>{{ TransactionStatus::HirerGetNameOfStatus($application->status) }}</td>
         <td class="action-class">
           
             {!! TransactionStatus::HirerGetButtonsOfStatus($application->status, $application->id) !!}

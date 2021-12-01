@@ -1,12 +1,15 @@
 <?php
 
+use Codedge\Fpdf\Fpdf\Fpdf;
 use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\Hirer\Statistics;
+use App\Http\Livewire\Hirer\ShowCandidate;
 use App\Http\Controllers\JobPostController;
 use App\Http\Livewire\Hirer\CandidatesApplied;
+use App\Http\Livewire\JobPosts\CandApplJobPosts;
 use App\Http\Controllers\QualificationController;
 use App\Http\Controllers\CandidatesAppliedController;
-use App\Http\Livewire\Hirer\ShowCandidate;
-use App\Http\Livewire\JobPosts\CandApplJobPosts;
+use App\Http\Controllers\PrintPDFController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,9 +40,9 @@ Route::group(['middleware' => 'auth'], function() {
 	});
 
 	Route::group(['middleware' => 'role:hirer'], function() {
-		Route::view('statistics', 'hirer.statistics')
-		->name('statistics');
 		Route::get('candidates-list-applied/{id}', CandidatesApplied::class);
+		Route::get('statistics', Statistics::class)->name('statistics');
 		Route::get('view-candidate/{id}', ShowCandidate::class)->name('view-candidate');
+		Route::get('statistics/pdf', PrintPDFController::class)->name('pdf');
 	});
 });
