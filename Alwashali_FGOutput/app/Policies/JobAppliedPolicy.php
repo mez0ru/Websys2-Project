@@ -36,7 +36,8 @@ class JobAppliedPolicy
      */
     public function view(User $user, JobApplied $jobApplied)
     {
-        //
+        return ($user->role === Roles::CANDIDATE && $user->id === $jobApplied->candidate_id)
+        || ($user->role === Roles::HIRER && $user->id === $jobApplied->job->hirer_id);
     }
 
     /**

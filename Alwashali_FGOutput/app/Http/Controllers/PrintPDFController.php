@@ -54,7 +54,9 @@ $fpdf->Ln();
         if ($request->get('acc', false))
         array_push($statusarr, TransactionStatus::ACCEPTED);
         if ($request->get('dism', false))
-        array_push($statusarr, TransactionStatus::APPLIED_DISMISSED, TransactionStatus::INTERVIEW_REQUESTED_REJECTED, TransactionStatus::INTERVIEWING_REJECTED);
+        array_push($statusarr, TransactionStatus::REJECTED);
+        if ($request->get('canc', false))
+        array_push($statusarr, TransactionStatus::CANCELLED);
 
         $gender = $request->get('gender');
         if ($gender == 'both')
@@ -116,10 +118,11 @@ $fpdf->Ln();
                         case TransactionStatus::ACCEPTED:
                             $status = 'Accepted';
                             break;
-
-            
+                            case TransactionStatus::CANCELLED:
+                                $status = 'Cancelled';
+                                break;
             default:
-            $status = 'Failed / Dismissed';
+            $status = 'Rejected';
                 break;
         }
         $fpdf->Cell($w[6],6,$status,'LR',0,'L',$fill);

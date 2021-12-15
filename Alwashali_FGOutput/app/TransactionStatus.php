@@ -7,9 +7,8 @@ class TransactionStatus
     static function HirerGetColorByStatus($status)
     {
         switch ($status) {
-            case TransactionStatus::APPLIED_DISMISSED:
-            case TransactionStatus::INTERVIEW_REQUESTED_REJECTED:
-            case TransactionStatus::INTERVIEWING_REJECTED:
+            case TransactionStatus::CANCELLED:
+            case TransactionStatus::REJECTED:
                 return 'text-danger';
             case TransactionStatus::INTERVIEWING:
                 return 'text-info';
@@ -25,12 +24,11 @@ class TransactionStatus
         switch ($status) {
             case TransactionStatus::APPLIED:
                 return 'Applied';
-            case TransactionStatus::APPLIED_DISMISSED:
-                return 'Dismissed';
+            case TransactionStatus::CANCELLED:
+                return 'Cancelled';
             case TransactionStatus::INTERVIEW_REQUESTED:
                 return 'Requested Interview!';
-            case TransactionStatus::INTERVIEW_REQUESTED_REJECTED:
-            case TransactionStatus::INTERVIEWING_REJECTED:
+            case TransactionStatus::REJECTED:
                 return 'Rejected';
             case TransactionStatus::INTERVIEWING:
                 return 'In the interview!';
@@ -56,6 +54,11 @@ class TransactionStatus
             case TransactionStatus::ACCEPTED:
                 return '<div class="card-header bg-success border-success text-white font-weight-bold">You have been accepted!</div>
                 <div class="card-body mx-3 mb-3">';
+                
+            case TransactionStatus::CANCELLED:
+                return '<div class="card-header bg-danger border-danger text-white font-weight-bold">Application Cancelled!</div>
+                <div class="card-body mx-3 mb-3">';
+                break;
             default:
                 return '<div class="card-header bg-danger border-danger text-white font-weight-bold">You have been rejected!</div>
                 <div class="card-body mx-3 mb-3">';
@@ -71,7 +74,7 @@ class TransactionStatus
             case TransactionStatus::INTERVIEW_REQUESTED:
                 return '<button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#Confirmation" wire:click="edit('.$id.', 1)">Fail</button>';
             case TransactionStatus::INTERVIEWING:
-                return '<button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#Confirmation" wire:click="edit('.$id.', 1)">Fail</button><button type="button" class="btn btn-outline-success ml-lg-2" data-target="#Confirmation" wire:click="edit('.$id.', 2)">Accept</button>';
+                return '<button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#Confirmation" wire:click="edit('.$id.', 1)">Fail</button><button type="button" class="btn btn-outline-success ml-lg-2" data-toggle="modal" data-target="#Confirmation" wire:click="edit('.$id.', 2)">Accept</button>';
             default:
                 return '';
         }
@@ -90,18 +93,22 @@ class TransactionStatus
         }
     }
 
-    static function UpgradeStatus($status, $isDeny){
+    static function CandidateUpgradeStatus($status, $isDeny){
         if ($isDeny == 1) // Deny / Cancel the application
-            return $status + 1;
-        else 
-            return $status + 2;
+            return TransactionStatus::CANCELLED; 
+        return ++$status;
+    }
+
+    static function HirerUpgradeStatus($status, $isDeny){
+        if ($isDeny == 1) // Deny / Cancel the application
+            return TransactionStatus::REJECTED; 
+        return ++$status;
     }
 
     public const APPLIED = 0;
-    public const APPLIED_DISMISSED = 1;
-    public const INTERVIEW_REQUESTED = 2;
-    public const INTERVIEW_REQUESTED_REJECTED = 3;
-    public const INTERVIEWING = 4;
-    public const INTERVIEWING_REJECTED = 5;
-    public const ACCEPTED = 6;
+    public const INTERVIEW_REQUESTED = 1;
+    public const INTERVIEWING = 2;
+    public const ACCEPTED = 3;
+    public const REJECTED = 4;
+    public const CANCELLED = 5;
 }

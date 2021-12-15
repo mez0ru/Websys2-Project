@@ -176,7 +176,14 @@
                                             <input class="form-check-input" type="checkbox" wire:model="dismC" id="failedC"
                                                 checked>
                                             <label class="form-check-label" for="failedC">
-                                                Failed / Dismissed
+                                                Rejected
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" wire:model="cancC" id="cancC"
+                                                checked>
+                                            <label class="form-check-label" for="cancC">
+                                                Cancelled
                                             </label>
                                         </div>
                                     </div>

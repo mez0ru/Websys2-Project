@@ -31,6 +31,7 @@ class Statistics extends Component
     // status count
     public $applied;
     public $dismissed;
+    public $cancelled;
     public $interview_requested;
     public $interviewing;
     public $accepted;
@@ -41,6 +42,7 @@ class Statistics extends Component
     public $intingC = true;
     public $accC = true;
     public $dismC = true;
+    public $cancC = true;
     public $gender = 'both';
     public $df;
     public $dt;
@@ -66,7 +68,12 @@ class Statistics extends Component
         $this->pdfData['gender'] = $this->gender;
 
         $ageRange = [$this->pdfData['agef'] = $this->agef, $this->pdfData['aget'] = $this->aget];
-        $dateRange = [$this->pdfData['df'] = $this->df, $this->pdfData['dt'] = $this->dt];
+        
+        if (!is_null($this->df))
+        $this->pdfData['df'] = date('Y-m-d 00:00:00', strtotime($this->df));
+        if (!is_null($this->dt))
+        $this->pdfData['dt'] =  date('Y-m-d 23:59:59', strtotime($this->dt));
+
         $statusRange = array();
 
         if ($this->appliedC){
@@ -86,8 +93,12 @@ class Statistics extends Component
         $this->pdfData['acc'] = true;
     }
         if ($this->dismC){
-        array_push($statusRange, TransactionStatus::APPLIED_DISMISSED, TransactionStatus::INTERVIEW_REQUESTED_REJECTED, TransactionStatus::INTERVIEWING_REJECTED);
+        array_push($statusRange, TransactionStatus::REJECTED);
         $this->pdfData['dism'] = true;
+    }
+    if ($this->cancC){
+        array_push($statusRange, TransactionStatus::CANCELLED);
+        $this->pdfData['canc'] = true;
     }
 
         //table
@@ -96,8 +107,8 @@ class Statistics extends Component
             $query->where('hirer_id', Auth::user()->id);
         })
         ->where(function ($query) use (&$searchTerm, &$gender, &$ageRange, &$dateRange, &$statusRange){
-            if (!(is_null($dateRange[0]) && is_null($dateRange[0])))
-                $query->whereBetween('created_at', $dateRange);
+            if ((array_key_exists('df', $this->pdfData) && array_key_exists('dt', $this->pdfData)))
+                $query->whereBetween('created_at', [$this->pdfData['df'], $this->pdfData['dt']]);
             $query
             ->whereIn('status', $statusRange)
             ->whereHas('candidate', function ($query) use (&$searchTerm, &$gender, &$ageRange) {
@@ -142,8 +153,9 @@ class Statistics extends Component
             $pieStatusChartModel = (new PieChartModel)
             ->setTitle('Distribution of applicants by Status')
             ->addSlice(TransactionStatus::HirerGetNameOfStatus(TransactionStatus::APPLIED), $this->applied, '#fffc38')
-            ->addSlice(TransactionStatus::HirerGetNameOfStatus(TransactionStatus::APPLIED_DISMISSED), $this->dismissed, '#ff3838')
-            ->addSlice(TransactionStatus::HirerGetNameOfStatus(TransactionStatus::INTERVIEW_REQUESTED), $this->interview_requested, '#d738ff')
+            ->addSlice(TransactionStatus::HirerGetNameOfStatus(TransactionStatus::REJECTED), $this->dismissed, '#ff3838')
+            ->addSlice(TransactionStatus::HirerGetNameOfStatus(TransactionStatus::CANCELLED), $this->cancelled, '#ff69be')
+            ->addSlice(TransactionStatus::HirerGetNameOfStatus(TransactionStatus::INTERVIEW_REQUESTED), $this->interview_requested, '#696eff')
             ->addSlice(TransactionStatus::HirerGetNameOfStatus(TransactionStatus::INTERVIEWING), $this->interviewing, '#38fff8')
             ->addSlice(TransactionStatus::HirerGetNameOfStatus(TransactionStatus::ACCEPTED), $this->accepted, '#3bff38');
 
@@ -215,9 +227,7 @@ class Statistics extends Component
         )->whereHas('job', function ($query) {
             $query->where('hirer_id', Auth::user()->id);
         })->where(function($query){
-            $query->where('status', TransactionStatus::APPLIED_DISMISSED)
-            ->orWhere('status', TransactionStatus::INTERVIEW_REQUESTED_REJECTED)
-            ->orWhere('status', TransactionStatus::INTERVIEWING_REJECTED);
+            $query->where('status', TransactionStatus::REJECTED);
         })->count();
 
         $this->interview_requested = JobApplied::with(
@@ -229,6 +239,16 @@ class Statistics extends Component
         )->whereHas('job', function ($query) {
             $query->where('hirer_id', Auth::user()->id);
         })->where('status', TransactionStatus::INTERVIEW_REQUESTED)->count();
+
+        $this->cancelled = JobApplied::with(
+            array(
+                'job' => function ($query) {
+                    $query->select('hirer_id');
+                },
+            )
+        )->whereHas('job', function ($query) {
+            $query->where('hirer_id', Auth::user()->id);
+        })->where('status', TransactionStatus::CANCELLED)->count();
 
         $this->interviewing = JobApplied::with(
             array(

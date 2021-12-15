@@ -107,7 +107,7 @@ class CandidatesApplied extends Component
     {
         $this->authorize('update', $this->selectedApp);
 
-        $this->selectedApp->update(['status' => TransactionStatus::UpgradeStatus($this->selectedApp->status, $this->action)]);
+        $this->selectedApp->update(['status' => TransactionStatus::HirerUpgradeStatus($this->selectedApp->status, $this->action)]);
         $this->selectedApp->save();
         
         switch ($this->action) {

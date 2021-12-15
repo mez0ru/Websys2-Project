@@ -33,6 +33,8 @@ class ShowCandidate extends Component
 
         $this->app = JobApplied::with(['job', 'candidate'])->find($this->ids);
 
+        $this->authorize('view', $this->app);
+
         $qualifications = Qualification::where('candidate_id', $this->app->candidate_id)
         ->where(function ($query) use(&$searchTerm) {
             $query->where('qualification','LIKE',$searchTerm)
@@ -82,7 +84,7 @@ class ShowCandidate extends Component
     {
         $this->authorize('update', $this->app);
 
-        $this->app->update(['status' => TransactionStatus::UpgradeStatus($this->app->status, $this->action)]);
+        $this->app->update(['status' => TransactionStatus::HirerUpgradeStatus($this->app->status, $this->action)]);
         $this->app->save();
         
         switch ($this->action) {

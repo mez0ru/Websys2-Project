@@ -81,7 +81,7 @@ class CandApplJobPosts extends Component
         $app = JobApplied::find($this->app_id);
         $this->authorize('update', $app);
 
-        $app->update(['status' => TransactionStatus::UpgradeStatus($this->status, $this->signal)]);
+        $app->update(['status' => TransactionStatus::CandidateUpgradeStatus($this->status, $this->signal)]);
         $app->save();
 
         if ($this->signal == 1)

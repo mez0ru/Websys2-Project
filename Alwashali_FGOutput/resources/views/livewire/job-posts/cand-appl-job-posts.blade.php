@@ -42,7 +42,7 @@
     
 </p>
                       <h6 class="mt-sm-4">Social Media:</h6>
-                      <p class="social-dis">{{ nl2br($app->job->social) }}</p>
+                      <p class="social-dis">{!! nl2br($app->job->social) !!}</p>
       </div>
       <div class="col-sm-9 col-6 order-2 order-sm-1">
       <div class="col-12-sm">
@@ -51,10 +51,10 @@
       <span class="badge badge-light rounded align-middle mb-2 min-work-exp">Min. Experience: {{ $app->job->requirement->min_work_experience }} year(s)</span>
       <div class="row mt-2">
       <div class="col-md-12">
-          <p class="jobdescription">{{ nl2br($app->job->description) }}</p>
+          <p class="jobdescription">{!! nl2br($app->job->description) !!}</p>
       </div>
       <div class="col-md-12">
-          <p class="qualifications"><b>Requirements:</b><br>{{ nl2br($app->job->requirement->qualifications) }}</p>
+          <p class="qualifications"><b>Requirements:</b><br>{!! nl2br($app->job->requirement->qualifications) !!}</p>
       </div>
 
       <div class="col-md-12">
